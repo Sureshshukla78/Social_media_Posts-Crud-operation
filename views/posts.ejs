@@ -1,0 +1,69 @@
+<%- include('./partials/header'); %>
+    <!-- <%=postData %> -->
+    <div class="container pt-5">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <img src="<%=postData.img%> " alt="" class="img-fluid" width="100%">
+                </div>
+            </div>
+            <div class="row">
+                <div class="container">
+                    <div class="col-12 bg-dark text-white text-center">
+                        <h1 class="pt-2 pb-2">
+                            <%=postData.title%>
+                        </h1>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <p class="lead">
+                        <%=postData.desc%>
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-12">
+                    <button class="btn rounded-0 btn-warning">
+                        <%=postData.likes.length%> Likes
+                    </button>
+                    <form method="POST" action="/posts/<%=postData._id%>?_method=DELETE">
+                        <button class="btn mt-2 rounded-0 btn-danger" type="submit">Delete Post</button>
+                    </form>
+                    <a href="/posts/<%=postData._id%>/edit"><button class="btn mt-2 rounded-0 btn-secondry" type="submit">Update Post</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- comments section -->
+    <div class="container pt-5">
+        <div class="container ">
+            <form action="/posts/<%=postData._id%>/comments" method="POST">
+                <div class="form-group">
+                    <textarea class="form-control" rows="1" placeholder="leave a comment here" name="comment"
+                        id="floatingTextarea"></textarea>
+                </div>
+                <button class="btn btn-primary">Comment</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- displaying comments -->
+    <div class="container pt-5">
+        <div class="container">
+            <div class="row">
+                <% postData.comments.forEach((comment)=>{%>
+                    <div class="col-12">
+                        <p>
+                            <strong>
+                                <%=comment.username%>:
+                            </strong>
+                            <%=comment.comment%><br>
+                        </p>
+                    </div>
+                    <%})%>
+            </div>
+        </div>
+    </div>
+    <%- include('./partials/footer'); %>

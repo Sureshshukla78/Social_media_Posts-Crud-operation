@@ -1,0 +1,27 @@
+<%- include('./partials/header'); %>
+    <div class="container">
+        <div class="container pt-5">
+            <div class="p-5 bg-dark text-light text-center">
+                <h1 class="ps-5 display-5">Read the Posts of developers!</h1>
+            </div>
+        </div>
+        <div class="container pt-3">
+            <div class="container">
+            <div class="row">
+                <% for(var i=0; i<post.length; i++){%>
+                    <div class="col-sm-12 col-md-3 p-2 border">
+                        <img src="<%= post[i].img %>" alt="post-image" class="img-fluid">
+                    </div>
+                    <div class="col-sm-12 col-md-9 p-2 border">
+                        <h2>
+                            <a href="/posts/<%=post[i]._id%>"><%= post[i].title %></a>
+                        </h2>
+                        <p class="lead" style="text-align: justify;"><%= post[i].desc.substring(0,250) %></p>
+                        <a href="/posts/<%=post[i]._id%>"><button class="bg-dark text-white rounded-0">Read More..</button></a> 
+                    </div>
+                    <%}%>
+            </div>
+        </div>
+        </div>
+    </div>
+    <%- include('./partials/footer'); %>
