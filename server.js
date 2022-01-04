@@ -9,6 +9,9 @@ const User = require("./server/models/user");
 const Comments = require("./server/models/comments");
 const passport = require("passport");
 const passportLocal = require('passport-local');
+// task 3 adding tokens for auth
+const jwt = require("jsonwebtoken");
+
 
 const session = require("express-session");
 
@@ -61,6 +64,7 @@ app.post('/posts', isLoggedIn, async (req, res) => {
             desc: req.body.desc,
             img: req.body.imgLink
         });
+        const token = await newPost.generatePostToken();
         const savedPost = await newPost.save();
         res.status(200).redirect("/");
     } catch (error) {
@@ -84,6 +88,7 @@ app.get('/posts/:id/edit', isLoggedIn, (req, res) => {
         if (err) {
             console.log(err);
         } else {
+            post.generatePostToken();
             res.render('edit-post', {post:post});
         }
     });
@@ -129,6 +134,7 @@ app.post('/register', (req, res) => {
             if (err) {
                 console.log(err);
             } else {
+                user.generateAuthToken();
                 passport.authenticate('local')(req, res, () => {
                     console.log("user registered");
                     // console.log(user);
@@ -136,6 +142,7 @@ app.post('/register', (req, res) => {
                 });
             }
         });
+
 });
 
 // show login form
@@ -154,8 +161,12 @@ app.post('/login', (req, res) => {
             console.log(err);
             res.redirect("/login");
         } else {
+            console.log("calling token function")
+            user.generateAuthToken();
+            console.log("calling token function done")
             // console.log("user logged in")
             // console.log(req.user);
+
             res.redirect("/");
         }
     })
@@ -176,6 +187,7 @@ app.post('/posts/:id/comments', isLoggedIn, async (req, res) => {
         if (err) {
             console.log(err);
         } else {
+            comment.generateCommentToken();
             Post.findById(req.params.id, (err, post) => {
                 if (err) {
                     console.log(err);
